@@ -1,0 +1,11 @@
+def int fibonacci(int n):
+	int f1 = 1
+	int f2 = 1
+	int i = 3
+	while i <= n:
+		f2 = f1 + f2
+		f1 = f2 - f1
+		i += 1
+	return f2
+
+print fibonacci(20)

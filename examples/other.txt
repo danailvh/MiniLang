@@ -1,0 +1,47 @@
+#this is a comment
+def float func1(float f):
+	float z = 3.5
+	return f * z + 1.0 * 123.2
+
+def float func2(float f):
+	float z = 3.5
+	return f * ( z + 1.0 ) * 123.2
+
+float f = 1.2
+float z = 10000
+string g = 'good'
+string b = 'bad'
+
+if func1(f) != func2(f) :
+	print g
+else :
+	print b
+
+if z > f :
+	print g
+elif z == f :
+	print b
+else :
+	print g
+
+print func1(f)
+print func2(f)
+
+if False and True:
+	print b
+elif False and False:
+	print b
+elif False or False:
+	print b
+elif (True or False) and True:
+	print g
+
+int a = 100 + 3 * 4 + 8 / 2
+print a
+
+int powerOfTwos = 1
+while powerOfTwos <= 256:
+	print powerOfTwos
+	powerOfTwos*=2
+
+print 'the end'

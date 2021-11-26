@@ -1,0 +1,73 @@
+grammar guide:
+
+[a] - 0 or 1 times nonterminal a 
+'a' - the string a 
+(a)* - 0 or more times nonterminal a 
+(a|b) - 1 time a or 1 time b 
+(a)+ - 1 or more times a 
+
+terminals
+literals - can be a string, a float or integer number or 'True' or 'False'
+identifier - a name of a variable or a function 
+IDENT - identation bigger than the identation of the previous line 
+DEDENT - identation smaller than the identation of the previous line 
+anything in '' is also a terminal 
+
+grammar : 
+
+
+topStatements :- (functionDefinition)* (statement | newline)*
+
+functionDefinition :- 'def' [type] identifier '(' [parameters] ')' ':' newline block 
+
+parameters :- (type identifier) | (type identifier ',' parameters)
+
+block :- IDENT (statement)+ DEDENT
+
+statement :- variableDefinition | assignementExpression | functionCall | binaryExpression | unaryExpression | ifStatement | whileStatement | identifier | literals
+
+variableDefinition :- type identifier '=' (functionCall | binaryExpression | atom)
+
+assignementExpression :- identifier assignementOperation (functionCall | binaryExpression | atom)
+
+assignementOperation :- '=' | '+=' | '-=' | '*=' | '/='
+
+functionCall :- identifier '(' [arguments] ')' 
+
+arguments :- (binaryExpression | atom) | ( (binaryExpression | atom) ',' arguments ) 
+
+unaryExpression :- (('return' | 'print')(functionCall | binaryExpression | atom)) | (('return' | 'break' | 'continue') newline)
+
+ifStatement :- 'if' ifCondition ':' newline block [elifStatement | elseStatement] 
+
+elifStatement :- 'elif' ifCondition ':' newline block [elifStatement | elseStatement] 
+
+elseStatement :- 'else' ':' newline block
+
+ifCondition :- binaryExpression | atom | functionCall
+
+whileStatement :- 'while' ifCondition ':' newline block 
+
+binaryExpression :- disjunction
+
+disjunction :- conjunction ('or' disjunction)*
+
+conjunction :- inversion ('and' conjunction)*
+
+inversion :- ('not' inversion) | comparison
+
+comparison :- expression (comparisonOperator expression)*
+
+comparisonOperator :- '<' | '<=' | '>' | '>=' | '=='
+
+expression :- term (('+' | '-') term)*
+
+term :- factor (('*' | '/' | '%') factor)*
+
+factor :- ['-'] (factor | power)
+
+power :- atom ['**' factor]
+
+atom :- identifier | literals | '(' binaryExpression ')' | functionCall
+
+type :- 'int' | 'float' | 'bool' | 'string'
