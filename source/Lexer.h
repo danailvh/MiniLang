@@ -34,7 +34,7 @@ enum TokenType
 	Backslash,
 
 	//Keywords
-	//"if","elif","else","break","continue","return","while","and","or","not","def","int","float","string","bool","print"
+	//"if","elif","else","break","continue","return","while","and","or","not","def","int","float","string","bool","print","readi"
 	IntD,
 	FloatD,
 	StringD,
@@ -51,7 +51,8 @@ enum TokenType
 	Or,
 	Not,
 	Print,
-
+	ReadInteger,
+	
 	Identifier,
 	String,
 	Integer,

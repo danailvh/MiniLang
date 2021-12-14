@@ -42,7 +42,7 @@ void Lexer::addIdentifier()
 	// identifier or keyword 
 	std::unordered_map<std::string, TokenType> keywords{ {"if",If}, {"elif",Elif}, {"else",Else}, {"break",Break}, {"continue",Continue},
 		{"return",Return}, {"while",While}, {"and",And}, {"or",Or}, {"not",Not}, {"def",Def}, {"int",IntD}, {"float",FloatD}, {"string",StringD},
-		{"bool",BoolD}, {"True",True}, {"False",False}, {"print",Print}};
+		{"bool",BoolD}, {"True",True}, {"False",False}, {"print",Print}, {"readi",ReadInteger} };
 
 	if (keywords.count(lex))
 	{
@@ -143,8 +143,8 @@ void Lexer::print()
 	std::vector<std::string> enumnames({
 		"Plus", "Minus", "Star", "DoubleStar", "Slash", "Mod", "LessThan", "MoreThan", "LessEqual", "MoreEqual", "Equal", "EqualEqual", "NotEqual", "LeftPar",
 		"RightPar", "Coma", "Colon", "Dot", "SemiColon", "PlusEqual", "MinusEqual", "TimesEqual", "DivEqual", "SingleQuote", "DoubleQuote", "Hash", "Backslash",
-		"IntD", "FloatD", "StringD", "BoolD", "If", "Elif" , "Else", "While", "Break", "Continue", "Def", "Return", "And", "Or", "Not", "Print", "Identifier", "String", "Integer", "Float", "True", "False", 
-		"Newline", "Invalid"});
+		"IntD", "FloatD", "StringD", "BoolD", "If", "Elif" , "Else", "While", "Break", "Continue", "Def", "Return", "And", "Or", "Not", "Print", "ReadIneger",
+		"Identifier", "String", "Integer", "Float", "True", "False", "Newline", "Invalid"});
 	for (auto& i : tokens)
 	{
 		std::cout << enumnames[i.type] << '\n';

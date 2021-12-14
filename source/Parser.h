@@ -22,6 +22,7 @@ class Parser
 	std::vector<std::shared_ptr<Expression>> params();
 	std::vector<std::shared_ptr<Expression>> args();
 
+	std::shared_ptr<Expression> read();
 	std::shared_ptr<Expression> topStmts();
 	std::shared_ptr<Expression> funcDef();
 	std::shared_ptr<Expression> statement(); 

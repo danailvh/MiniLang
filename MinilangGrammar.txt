@@ -26,9 +26,9 @@ block :- IDENT (statement)+ DEDENT
 
 statement :- variableDefinition | assignementExpression | functionCall | binaryExpression | unaryExpression | ifStatement | whileStatement | identifier | literals
 
-variableDefinition :- type identifier '=' (functionCall | binaryExpression | atom)
+variableDefinition :- type identifier '=' (functionCall | 'readi' |binaryExpression | atom)
 
-assignementExpression :- identifier assignementOperation (functionCall | binaryExpression | atom)
+assignementExpression :- identifier assignementOperation (functionCall | 'readi' |binaryExpression | atom)
 
 assignementOperation :- '=' | '+=' | '-=' | '*=' | '/='
 

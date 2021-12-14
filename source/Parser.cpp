@@ -289,7 +289,7 @@ std::shared_ptr<Expression> Parser::unaryExpr()
 	if (currType(Return) && peek() == Newline)
 	{
 		current++;
-		return std::make_shared<UnaryExpression>("return", nullptr, 0);
+		return std::make_shared<UnaryExpression>("return", nullptr, VOID);
 	}
 	if (auto unary = breakCont())
 		return unary;
@@ -307,9 +307,19 @@ std::shared_ptr<Expression> Parser::unaryExpr()
 	return nullptr;
 }
 
+std::shared_ptr<Expression> Parser::read()
+{
+	if (currType(ReadInteger))
+	{
+		current++;
+		return std::make_shared<UnaryExpression>(tokens[current - 1].lexeme, nullptr, INT);
+	}
+	return nullptr;
+}
+
 std::shared_ptr<Expression> Parser::varDef()
 {
-	// TYPE identifer '='  functioncall | binExpr | atom
+	// TYPE identifer '='  functioncall | readi | binExpr | atom
 	unsigned startpos = current;
 	if (!typeIn({IntD,FloatD,StringD,BoolD}))
 		return nullptr;
@@ -329,6 +339,8 @@ std::shared_ptr<Expression> Parser::varDef()
 
 	if (auto rhs = funcCall())
 		return std::make_shared<VariableDefinitionExpression>(varName, rhs, lhs->getType());
+	if (auto rhs = read())
+		return std::make_shared<VariableDefinitionExpression>(varName, rhs, lhs->getType());
 	if (auto rhs = binaryExpr())
 		return std::make_shared<VariableDefinitionExpression>(varName, rhs, lhs->getType());
 	if (auto rhs = atom())
@@ -340,7 +352,7 @@ std::shared_ptr<Expression> Parser::varDef()
 
 std::shared_ptr<Expression> Parser::assignementExpr()
 {
-	// identifier 'asOP' (functionCall|binary|atom)
+	// identifier 'asOP' (functionCall|readi|binary|atom)
 	unsigned startpos = current;
 	std::string varName;
 	if (currType(Identifier))
@@ -356,6 +368,8 @@ std::shared_ptr<Expression> Parser::assignementExpr()
 	current++;
 
 	if (auto rhs = funcCall())
+		return std::make_shared<AssignmentExpression>(opName, varName, rhs, rhs->getType());
+	if (auto rhs = read())
 		return std::make_shared<AssignmentExpression>(opName, varName, rhs, rhs->getType());
 	if (auto rhs = binaryExpr())
 		return std::make_shared<AssignmentExpression>(opName, varName, rhs, rhs->getType());

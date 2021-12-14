@@ -65,6 +65,7 @@ char CodeGenerator::typeToLowcase(char t)
 
 void CodeGenerator::visit(VariableDefinitionExpression* e)
 {
+	int var1 = CR.numOfVars;
 	CR.numOfVars++;
 	e->getRhs()->accept(*this);
 	char lhsType = e->getType();
@@ -76,17 +77,17 @@ void CodeGenerator::visit(VariableDefinitionExpression* e)
 	if (CR.vars.count(e->getVarName()) != 0)
 		assert("variable redefinition" && 0);
 
-	CR.vars[e->getVarName()] = CR.numOfVars;
+	CR.vars[e->getVarName()] = var1;
 	CR.types[e->getVarName()] = lhsType;
 
 	if (lhsType == BOOL)
 		boolify();
 	if (lhsType == INT || lhsType == BOOL)
-		OS << "istore " << CR.numOfVars << "\n";
+		OS << "istore " << var1 << "\n";
 	else if (lhsType == FLOAT)
-		OS << "fstore " << CR.numOfVars << "\n";
+		OS << "fstore " << var1 << "\n";
 	else if (lhsType == STRING)
-		OS << "astore " << CR.numOfVars << "\n";
+		OS << "astore " << var1 << "\n";
 	else
 		assert("typeError" && 0);
 }
@@ -320,6 +321,51 @@ void CodeGenerator::visit(UnaryExpression* e)
 		if (breakContinue.empty())
 			assert("break outside of loop" && 0);
 		OS << "goto " << breakContinue.top().first << "\n";
+	}
+	else if (e->getOp() == "readi")
+	{
+		int label1 = labelNum;
+		int label2 = labelNum + 1;
+		int var1 = CR.numOfVars;
+		int var2 = CR.numOfVars + 1;
+		CR.numOfVars += 2;
+		labelNum += 2;
+		//var1 starts at 0 and digits are added 1 by 1 
+		OS << "iconst_0\n";
+		OS << "istore " << var1 << "\n";
+		OS << "label" << label1 << ":\n";
+		OS << "getstatic java/lang/System/in Ljava/io/InputStream;\n";
+		OS << "invokevirtual java/io/InputStream/read()I\n";
+		OS << "istore " << var2 << "\n";
+		OS << "iload " << var2 << "\n";
+		// 10 and 13 are newline and carriage return checks 
+		// when we see either it means input is over and we return the final number
+		OS << "ldc 10\n"; 
+		OS << "isub\n";
+		OS << "ifeq label" << label2 << "\n";
+		OS << "iload " << var2 << "\n";
+		OS << "ldc 13\n";
+		OS << "isub\n";
+		OS << "ifeq label" << label2 << "\n";
+		OS << "iload " << var2 << "\n";
+		// java/io/InputStream/read() reads a byte 
+		// substract 48 to get the digit
+		OS << "ldc 48\n";
+		OS << "isub\n";
+		// multiply the result so far by 10 and add the new digit
+		OS << "iload " << var1 << "\n";
+		OS << "ldc 10\n";
+		OS << "imul\n";
+		OS << "iadd\n";
+		OS << "istore " << var1 << "\n";
+		OS << "goto label" << label1 << "\n";
+
+		OS << "label" << label2 << ":\n";
+		// after we are done with the number read 1 more byte which would be a nl
+		// so that we can read more than once per program
+		OS << "getstatic java/lang/System/in Ljava/io/InputStream;\n";
+		OS << "invokevirtual java/io/InputStream/read()I\n";
+		OS << "iload " << var1 << "\n";
 	}
 	else
 		assert("nonexistant unary expression" && 0);
