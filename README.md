@@ -12,7 +12,7 @@ We can feed the generated .j file to Jasmin and get the .class file which we can
 first argument is the file containing the source code
 second (and optional) argument is the name of the generated file "Program.j" by default.
 
-./Minilang source.txt 
+./Minilang source.txt source.j
 
 2.The other option is to open the .sln file with Visual Studio and write the code in the test.txt file
 The output will be in solution/Program.j 
