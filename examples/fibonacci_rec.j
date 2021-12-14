@@ -39,7 +39,41 @@ ireturn
 .limit locals 32
 .limit stack 32
 getstatic java/lang/System/out Ljava/io/PrintStream;
-ldc 20
+ldc "Enter integer"
+invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
+iconst_0
+istore 1
+label4:
+getstatic java/lang/System/in Ljava/io/InputStream;
+invokevirtual java/io/InputStream/read()I
+istore 2
+iload 2
+ldc 10
+isub
+ifeq label5
+iload 2
+ldc 13
+isub
+ifeq label5
+iload 2
+ldc 48
+isub
+iload 1
+ldc 10
+imul
+iadd
+istore 1
+goto label4
+label5:
+getstatic java/lang/System/in Ljava/io/InputStream;
+invokevirtual java/io/InputStream/read()I
+iload 1
+istore 0
+getstatic java/lang/System/out Ljava/io/PrintStream;
+ldc "Your fibonacci number is :"
+invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
+getstatic java/lang/System/out Ljava/io/PrintStream;
+iload 0
 invokestatic fibonacci_rec/fibonacci(I)I
 invokevirtual java/io/PrintStream/println(I)V
 return

@@ -10,13 +10,13 @@
 .limit locals 32
 .limit stack 32
 ldc 1
-istore 2
+istore 1
 ldc 1
-istore 3
+istore 2
 ldc 3
-istore 4
+istore 3
 label0:
-iload 4
+iload 3
 iload 0
 if_icmple label2
 iconst_0 
@@ -25,21 +25,21 @@ label2:
 iconst_1
 label3:
 ifeq label1
+iload 1
 iload 2
-iload 3
 iadd
-istore 3
-iload 3
-iload 2
-isub
 istore 2
-iload 4
+iload 2
+iload 1
+isub
+istore 1
+iload 3
 ldc 1
 iadd
-istore 4
+istore 3
 goto label0
 label1:
-iload 3
+iload 2
 ireturn
 .end method
 
@@ -47,7 +47,41 @@ ireturn
 .limit locals 32
 .limit stack 32
 getstatic java/lang/System/out Ljava/io/PrintStream;
-ldc 20
+ldc "Enter integer"
+invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
+iconst_0
+istore 1
+label4:
+getstatic java/lang/System/in Ljava/io/InputStream;
+invokevirtual java/io/InputStream/read()I
+istore 2
+iload 2
+ldc 10
+isub
+ifeq label5
+iload 2
+ldc 13
+isub
+ifeq label5
+iload 2
+ldc 48
+isub
+iload 1
+ldc 10
+imul
+iadd
+istore 1
+goto label4
+label5:
+getstatic java/lang/System/in Ljava/io/InputStream;
+invokevirtual java/io/InputStream/read()I
+iload 1
+istore 0
+getstatic java/lang/System/out Ljava/io/PrintStream;
+ldc "Your fibonacci number is :"
+invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
+getstatic java/lang/System/out Ljava/io/PrintStream;
+iload 0
 invokestatic fibonacci_iter/fibonacci(I)I
 invokevirtual java/io/PrintStream/println(I)V
 return

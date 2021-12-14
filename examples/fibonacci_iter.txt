@@ -8,4 +8,7 @@ def int fibonacci(int n):
 		i += 1
 	return f2
 
-print fibonacci(20)
+print "Enter integer"
+int n = readi
+print "Your fibonacci number is :"
+print fibonacci(n)

@@ -3,4 +3,8 @@ def int factorial(int n):
 		return 1
 	return n * factorial(n - 1)
 
-print factorial(5)
+print "enter number"
+int n = readi
+print "the factorial is : "
+print factorial(n)
+
